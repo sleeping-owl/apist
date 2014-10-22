@@ -1,6 +1,6 @@
 {
     "name": "sleeping-owl/apist",
-    "description": "Package to provide api-like access to sites without api",
+    "description": "Package to provide api-like access to foreign sites based on html parsing",
 	"license": "MIT",
 	"keywords": ["api", "crawler"],
     "authors": [
@@ -11,7 +11,6 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "4.2.*",
 		"guzzlehttp/guzzle": "5.*",
 		"symfony/css-selector": "2.5.*",
 		"symfony/dom-crawler": "2.5.*"

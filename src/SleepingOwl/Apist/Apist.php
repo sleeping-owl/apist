@@ -44,12 +44,12 @@ abstract class Apist
 	/**
 	 * Create filter object
 	 *
-	 * @param $string
+	 * @param $cssSelector
 	 * @return ApistSelector
 	 */
-	public static function filter($string)
+	public static function filter($cssSelector)
 	{
-		return new ApistSelector($string);
+		return new ApistSelector($cssSelector);
 	}
 
 	/**

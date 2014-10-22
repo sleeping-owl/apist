@@ -37,6 +37,17 @@ class ResultCallback
 		{
 			return $node;
 		}
+		if ($this->methodName === 'exists')
+		{
+			return (bool) count($node);
+		}
+		if (in_array($this->methodName, ['then', 'else']))
+		{
+			if ($node && $this->methodName === 'then' || ! $node && $this->methodName === 'else')
+			{
+				return $method->parseBlueprint($this->arguments[0]);
+			}
+		}
 		if ($this->methodName === 'each')
 		{
 			return $node->each(function ($node) use ($method)

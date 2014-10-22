@@ -17,6 +17,9 @@ use Symfony\Component\DomCrawler\Crawler;
  * @method ApistSelector trim()
  * @method ApistSelector intval()
  * @method ApistSelector floatval()
+ * @method ApistSelector exists()
+ * @method ApistSelector then()
+ * @method ApistSelector else()
  */
 class ApistSelector
 {
