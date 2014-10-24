@@ -33,46 +33,92 @@ class ResultCallback
 	 */
 	public function apply($node, ApistMethod $method)
 	{
-		if ($this->methodName === 'element')
+		if ($this->methodName === 'else')
 		{
-			return $node;
+			if (is_bool($node)) $node = ! $node;
+			$this->methodName = 'then';
 		}
-		if ($this->methodName === 'exists')
+		if ($this->isResourceMethod($method))
 		{
-			return (bool) count($node);
+			return $this->callResourceMethod($method, $node);
 		}
-		if (in_array($this->methodName, ['then', 'else']))
+		if ($this->isNodeMethod($node))
 		{
-			if ($node && $this->methodName === 'then' || ! $node && $this->methodName === 'else')
-			{
-				return $method->parseBlueprint($this->arguments[0]);
-			}
+			return $this->callNodeMethod($node);
 		}
-		if ($this->methodName === 'each')
+		if ($this->isGlobalFunction())
 		{
-			return $node->each(function ($node) use ($method)
-			{
-				return $method->parseBlueprint($this->arguments[0], $node);
-			});
+			return $this->callGlobalFunction($node);
 		}
-		if (method_exists($node, $this->methodName))
+		throw new \InvalidArgumentException("Method '{$this->methodName}' was not found");
+	}
+
+	/**
+	 * @param ApistMethod $method
+	 * @return bool
+	 */
+	protected function isResourceMethod(ApistMethod $method)
+	{
+		return method_exists($method->getResource(), $this->methodName);
+	}
+
+	/**
+	 * @param ApistMethod $method
+	 * @param $node
+	 * @return mixed
+	 */
+	protected function callResourceMethod(ApistMethod $method, $node)
+	{
+		$arguments = $this->arguments;
+		array_unshift($arguments, $node);
+		return call_user_func_array([
+			$method->getResource(),
+			$this->methodName
+		], $arguments);
+	}
+
+	/**
+	 * @param $node
+	 * @return bool
+	 */
+	protected function isNodeMethod($node)
+	{
+		return method_exists($node, $this->methodName);
+	}
+
+	/**
+	 * @param $node
+	 * @return mixed
+	 */
+	protected function callNodeMethod($node)
+	{
+		return call_user_func_array([
+			$node,
+			$this->methodName
+		], $this->arguments);
+	}
+
+	/**
+	 * @return bool
+	 */
+	protected function isGlobalFunction()
+	{
+		return function_exists($this->methodName);
+	}
+
+	/**
+	 * @param $node
+	 * @return mixed
+	 */
+	protected function callGlobalFunction($node)
+	{
+		if (is_object($node))
 		{
-			return call_user_func_array([
-				$node,
-				$this->methodName
-			], $this->arguments);
+			$node = $node->text();
 		}
-		if (function_exists($this->methodName))
-		{
-			if ( ! is_string($node))
-			{
-				$node = $node->text();
-			}
-			$arguments = $this->arguments;
-			array_unshift($arguments, $node);
-			return call_user_func_array($this->methodName, $arguments);
-		}
-		return $node;
+		$arguments = $this->arguments;
+		array_unshift($arguments, $node);
+		return call_user_func_array($this->methodName, $arguments);
 	}
 
 } 

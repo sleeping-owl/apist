@@ -3,6 +3,7 @@
 use GuzzleHttp\Client;
 use SleepingOwl\Apist\Methods\ApistMethod;
 use SleepingOwl\Apist\Selectors\ApistSelector;
+use Symfony\Component\DomCrawler\Crawler;
 
 abstract class Apist
 {
@@ -10,18 +11,21 @@ abstract class Apist
 	 * @var string
 	 */
 	protected $baseUrl;
-
 	/**
 	 * @var Client
 	 */
 	protected $guzzle;
+	/**
+	 * @var ApistMethod
+	 */
+	protected $currentMethod;
 
 	/**
 	 * @param array $options
 	 */
 	function __construct($options = [])
 	{
-		$options['base_url'] = $this->baseUrl;
+		$options['base_url'] = $this->getBaseUrl();
 		$this->guzzle = new Client($options);
 	}
 
@@ -53,6 +57,22 @@ abstract class Apist
 	}
 
 	/**
+	 * @return ApistMethod
+	 */
+	public function getCurrentMethod()
+	{
+		return $this->currentMethod;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getBaseUrl()
+	{
+		return $this->baseUrl;
+	}
+
+	/**
 	 * @param $httpMethod
 	 * @param $url
 	 * @param $blueprint
@@ -61,9 +81,25 @@ abstract class Apist
 	 */
 	protected function request($httpMethod, $url, $blueprint, $options = [])
 	{
-		$method = new ApistMethod($this, $url, $blueprint);
-		$method->setMethod($httpMethod);
-		return $method->get($options);
+		$this->currentMethod = new ApistMethod($this, $url, $blueprint);
+		$this->currentMethod->setMethod($httpMethod);
+		$result = $this->currentMethod->get($options);
+		$this->currentMethod = null;
+		return $result;
+	}
+
+	/**
+	 * @param $content
+	 * @param $blueprint
+	 * @return array|string
+	 */
+	protected function parse($content, $blueprint)
+	{
+		$this->currentMethod = new ApistMethod($this, null, $blueprint);
+		$this->currentMethod->setContent($content);
+		$result = $this->currentMethod->parseBlueprint($blueprint);
+		$this->currentMethod = null;
+		return $result;
 	}
 
 	/**
@@ -130,6 +166,76 @@ abstract class Apist
 	protected function delete($url, $blueprint, $options = [])
 	{
 		return $this->request('DELETE', $url, $blueprint, $options);
+	}
+
+	/**
+	 * @param $node
+	 * @return mixed
+	 */
+	public function element($node)
+	{
+		return $node;
+	}
+
+	/**
+	 * @param $node
+	 * @param $callback
+	 * @return mixed
+	 */
+	public function call($node, $callback)
+	{
+		return $callback($node);
+	}
+
+	/**
+	 * @param $node
+	 * @param $callback
+	 * @return mixed
+	 */
+	public function check($node, $callback)
+	{
+		return $this->call($node, $callback);
+	}
+
+	/**
+	 * @param $node
+	 * @return bool
+	 */
+	public function exists($node)
+	{
+		return (bool)count($node);
+	}
+
+	/**
+	 * @param $node
+	 * @param $blueprint
+	 * @return array|string
+	 */
+	public function then($node, $blueprint)
+	{
+		if ($node === true)
+		{
+			return $this->getCurrentMethod()->parseBlueprint($blueprint);
+		}
+		return $node;
+	}
+
+	/**
+	 * @param Crawler $node
+	 * @param $blueprint
+	 * @return mixed
+	 */
+	public function each(Crawler $node, $blueprint)
+	{
+		$callback = $blueprint;
+		if ( ! is_callable($callback))
+		{
+			$callback = function ($node) use ($blueprint)
+			{
+				return $this->getCurrentMethod()->parseBlueprint($blueprint, $node);
+			};
+		}
+		return $node->each($callback);
 	}
 
 }

@@ -192,4 +192,12 @@ class ApistMethod
 		];
 	}
 
+	/**
+	 * @return Apist
+	 */
+	public function getResource()
+	{
+		return $this->resource;
+	}
+
 }

@@ -18,8 +18,10 @@ use Symfony\Component\DomCrawler\Crawler;
  * @method ApistSelector intval()
  * @method ApistSelector floatval()
  * @method ApistSelector exists()
- * @method ApistSelector then()
- * @method ApistSelector else()
+ * @method ApistSelector then($blueprint)
+ * @method ApistSelector else($blueprint)
+ * @method ApistSelector check($callback)
+ * @method ApistSelector call($callback)
  */
 class ApistSelector
 {

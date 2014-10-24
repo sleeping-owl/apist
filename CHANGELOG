@@ -1,0 +1,18 @@
+CHANGELOG
+=========
+
+2014-10-24, v1.1.0
+------------------
+
+* getBaseUrl() overriding method instead of protected field
+* Api class methods now can be used in filter chain methods
+* New filter chain method for conditional check by callback: ->check($callback)
+* New filter chain method for custom callback call: ->call($callback)
+* Updated filter chain methods: each() also accepts callback with ($node, $index) parameters
+* New api class method parse($content, $blueprint) to parse content by blueprint without http-requests
+* Code cleanup
+
+2012-10-22, v1.0.0
+-----------------
+
+* Initial Version
