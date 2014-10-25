@@ -74,9 +74,7 @@ class ApistSelector
 	 */
 	function __call($name, $arguments)
 	{
-		$resultCallback = new ResultCallback($name, $arguments);
-		$this->resultMethodChain[] = $resultCallback;
-		return $this;
+		return $this->addCallback($name, $arguments);
 	}
 
 	/**
@@ -97,6 +95,18 @@ class ApistSelector
 			$node = $resultCallback->apply($node, $method);
 		}
 		return $node;
+	}
+
+	/**
+	 * @param $name
+	 * @param $arguments
+	 * @return $this
+	 */
+	public function addCallback($name, $arguments)
+	{
+		$resultCallback = new ResultCallback($name, $arguments);
+		$this->resultMethodChain[] = $resultCallback;
+		return $this;
 	}
 
 } 

@@ -3,6 +3,7 @@
 use GuzzleHttp\Client;
 use SleepingOwl\Apist\Methods\ApistMethod;
 use SleepingOwl\Apist\Selectors\ApistSelector;
+use SleepingOwl\Apist\Yaml\YamlApist;
 use Symfony\Component\DomCrawler\Crawler;
 
 abstract class Apist
@@ -57,6 +58,17 @@ abstract class Apist
 	}
 
 	/**
+	 * Initialize api from yaml configuration file
+	 *
+	 * @param $file
+	 * @return YamlApist
+	 */
+	public static function fromYaml($file)
+	{
+		return new YamlApist($file, []);
+	}
+
+	/**
 	 * @return ApistMethod
 	 */
 	public function getCurrentMethod()
@@ -70,6 +82,14 @@ abstract class Apist
 	public function getBaseUrl()
 	{
 		return $this->baseUrl;
+	}
+
+	/**
+	 * @param string $baseUrl
+	 */
+	public function setBaseUrl($baseUrl)
+	{
+		$this->baseUrl = $baseUrl;
 	}
 
 	/**
@@ -225,9 +245,16 @@ abstract class Apist
 	 * @param $blueprint
 	 * @return mixed
 	 */
-	public function each(Crawler $node, $blueprint)
+	public function each(Crawler $node, $blueprint = null)
 	{
 		$callback = $blueprint;
+		if (is_null($callback))
+		{
+			$callback = function ($node)
+			{
+				return $node;
+			};
+		}
 		if ( ! is_callable($callback))
 		{
 			$callback = function ($node) use ($blueprint)

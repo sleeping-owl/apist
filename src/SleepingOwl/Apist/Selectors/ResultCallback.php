@@ -33,6 +33,10 @@ class ResultCallback
 	 */
 	public function apply($node, ApistMethod $method)
 	{
+		if (is_array($node))
+		{
+			return $this->applyToArray($node, $method);
+		}
 		if ($this->methodName === 'else')
 		{
 			if (is_bool($node)) $node = ! $node;
@@ -51,6 +55,16 @@ class ResultCallback
 			return $this->callGlobalFunction($node);
 		}
 		throw new \InvalidArgumentException("Method '{$this->methodName}' was not found");
+	}
+
+	protected function applyToArray($array, ApistMethod $method)
+	{
+		$result = [];
+		foreach ($array as $node)
+		{
+			$result[] = $this->apply($node, $method);
+		}
+		return $result;
 	}
 
 	/**

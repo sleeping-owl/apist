@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+2014-10-25, v1.2.0
+------------------
+
+* Updated filter chain method: each() also can be used without any arguments, return array of nodes
+* Filter chain methods can be applied to array: ->each()->text()->mb_strtoupper() will return array of uppercase strings
+* Yaml configuration files support added. For details see [documentation](http://sleeping-owl-apist.gopagoda.com/documentation#yaml-configuration)
+* Now you can initialize api from yaml file without writing your own classes using Apist::fromYaml($file) method
+
 2014-10-24, v1.1.0
 ------------------
 
