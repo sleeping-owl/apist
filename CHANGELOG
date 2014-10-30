@@ -9,6 +9,14 @@ CHANGELOG
 * New pseudo class support in css selectors: :first, :last, :eq(pos).
 * Code cleanup: all basic filters was moved to ApistFilter class, your IDE now will work better with Apist.
 * Exception suppression now can be disabled using `$api->setSuppressExceptions(false)`. By default suppression is on. Otherwise all nodes with exceptions will be silently replaced with `null`.
+* New filter: ->children() - get all children nodes
+* New filters: ->prev(), ->prevAll(), ->prevUntil($selector) - get previous node (nodes)
+* New filters: ->next(), ->nextAll(), ->nextUntil($selector) - get next node (nodes)
+* New filter: ->is($selector) - check if this node can be retrieved by $selector
+* New filter: ->find($selector) - find children by $selector
+* New filter: ->filterNodes($selector) - filter selected nodes by $selector (same as jquery "filter" method)
+* New filter: ->closest($selector) - find closest parent by $selector
+* New filter: ->hasAttr($attribute) - check if attribute exists
 
 2014-10-25, v1.2.0
 ------------------

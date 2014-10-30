@@ -61,12 +61,154 @@ class ApistFilter
 	}
 
 	/**
+	 * @param $selector
+	 * @return ApistFilter
+	 */
+	public function filterNodes($selector)
+	{
+		$rootNode = $this->method->getCrawler();
+		$crawler = new Crawler;
+		$rootNode->filter($selector)->each(function (Crawler $filteredNode) use ($crawler)
+		{
+			$filteredNode = $filteredNode->getNode(0);
+			foreach ($this->node as $node)
+			{
+				if ($filteredNode === $node)
+				{
+					$crawler->add($node);
+					break;
+				}
+			}
+		});
+		return $crawler;
+	}
+
+	/**
+	 * @param $selector
+	 * @return ApistFilter
+	 */
+	public function find($selector)
+	{
+		return $this->node->filter($selector);
+	}
+
+	/**
+	 * @return ApistFilter
+	 */
+	public function children()
+	{
+		return $this->node->children();
+	}
+
+	/**
+	 * @return ApistFilter
+	 */
+	public function prev()
+	{
+		return $this->prevAll()->first();
+	}
+
+	/**
+	 * @return ApistFilter
+	 */
+	public function prevAll()
+	{
+		return $this->node->previousAll();
+	}
+
+	/**
+	 * @param $selector
+	 * @return ApistFilter
+	 */
+	public function prevUntil($selector)
+	{
+		$crawler = new Crawler;
+		$filter = new static($this->node, $this->method);
+		while (1)
+		{
+			$node = $filter->prev();
+			if (is_null($node))
+			{
+				break;
+			}
+			$filter->node = $node;
+			if ($filter->is($selector)) break;
+			$crawler->add($node->getNode(0));
+		}
+		return $crawler;
+	}
+
+	/**
+	 * @return ApistFilter
+	 */
+	public function next()
+	{
+		return $this->nextAll()->first();
+	}
+
+	/**
+	 * @return ApistFilter
+	 */
+	public function nextAll()
+	{
+		return $this->node->nextAll();
+	}
+
+	/**
+	 * @param $selector
+	 * @return ApistFilter
+	 */
+	public function nextUntil($selector)
+	{
+		$crawler = new Crawler;
+		$filter = new static($this->node, $this->method);
+		while (1)
+		{
+			$node = $filter->next();
+			if (is_null($node))
+			{
+				break;
+			}
+			$filter->node = $node;
+			if ($filter->is($selector)) break;
+			$crawler->add($node->getNode(0));
+		}
+		return $crawler;
+	}
+
+	/**
+	 * @return ApistFilter
+	 */
+	public function is($selector)
+	{
+		return count($this->filterNodes($selector)) > 0;
+	}
+
+	/**
+	 * @return ApistFilter
+	 */
+	public function closest($selector)
+	{
+		$this->node = $this->node->parents();
+		return $this->filterNodes($selector)->last();
+	}
+
+	/**
 	 * @param $attribute
 	 * @return ApistFilter
 	 */
 	public function attr($attribute)
 	{
 		return $this->node->attr($attribute);
+	}
+
+	/**
+	 * @param $attribute
+	 * @return ApistFilter
+	 */
+	public function hasAttr($attribute)
+	{
+		return ! is_null($this->node->attr($attribute));
 	}
 
 	/**
@@ -202,4 +344,5 @@ class ApistFilter
 			$this->node = $this->node->text();
 		}
 	}
+
 }

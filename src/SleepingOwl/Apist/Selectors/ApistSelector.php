@@ -45,8 +45,10 @@ class ApistSelector
 			{
 				return null;
 			}
+		} else
+		{
+			return $this->applyResultCallbackChain($result, $method);
 		}
-		return $this->applyResultCallbackChain($result, $method);
 	}
 
 	/**
