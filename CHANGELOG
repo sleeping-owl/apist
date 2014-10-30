@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-2014-10-30, v1.2.1
+2014-10-30, v1.3.0
 ------------------
 
 * New method Apist::current() to create filter based on current node element. Usefull in ->each() callback.
