@@ -3,27 +3,6 @@
 use SleepingOwl\Apist\Methods\ApistMethod;
 use Symfony\Component\DomCrawler\Crawler;
 
-/**
- * Class ApistSelector
- *
- * @method ApistSelector text()
- * @method ApistSelector html()
- * @method ApistSelector attr($attribute)
- * @method ApistSelector each($closure)
- * @method ApistSelector eq($offset)
- * @method ApistSelector filter($cssSelector)
- * @method ApistSelector first()
- * @method ApistSelector last()
- * @method ApistSelector element()
- * @method ApistSelector trim()
- * @method ApistSelector intval()
- * @method ApistSelector floatval()
- * @method ApistSelector exists()
- * @method ApistSelector then($blueprint)
- * @method ApistSelector else($blueprint)
- * @method ApistSelector check($callback)
- * @method ApistSelector call($callback)
- */
 class ApistSelector
 {
 	/**
@@ -57,13 +36,17 @@ class ApistSelector
 			$rootNode = $method->getCrawler();
 		}
 		$result = $rootNode->filter($this->selector);
-		try
+		if ($method->getResource()->isSuppressExceptions())
 		{
-			return $this->applyResultCallbackChain($result, $method);
-		} catch (\InvalidArgumentException $e)
-		{
-			return null;
+			try
+			{
+				return $this->applyResultCallbackChain($result, $method);
+			} catch (\InvalidArgumentException $e)
+			{
+				return null;
+			}
 		}
+		return $this->applyResultCallbackChain($result, $method);
 	}
 
 	/**

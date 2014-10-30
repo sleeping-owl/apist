@@ -7,6 +7,8 @@ CHANGELOG
 * New method Apist::current() to create filter based on current node element. Usefull in ->each() callback.
 * New YAML default structure :current. Same as Apist::current() method.
 * New pseudo class support in css selectors: :first, :last, :eq(pos).
+* Code cleanup: all basic filters was moved to ApistFilter class, your IDE now will work better with Apist.
+* Exception suppression now can be disabled using `$api->setSuppressExceptions(false)`. By default suppression is on. Otherwise all nodes with exceptions will be silently replaced with `null`.
 
 2014-10-25, v1.2.0
 ------------------

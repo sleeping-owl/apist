@@ -2,6 +2,7 @@
 
 use GuzzleHttp\Client;
 use SleepingOwl\Apist\Methods\ApistMethod;
+use SleepingOwl\Apist\Selectors\ApistFilter;
 use SleepingOwl\Apist\Selectors\ApistSelector;
 use SleepingOwl\Apist\Yaml\YamlApist;
 use Symfony\Component\DomCrawler\Crawler;
@@ -20,6 +21,10 @@ abstract class Apist
 	 * @var ApistMethod
 	 */
 	protected $currentMethod;
+	/**
+	 * @var bool
+	 */
+	protected $suppressExceptions = true;
 
 	/**
 	 * @param array $options
@@ -50,7 +55,7 @@ abstract class Apist
 	 * Create filter object
 	 *
 	 * @param $cssSelector
-	 * @return ApistSelector
+	 * @return ApistFilter
 	 */
 	public static function filter($cssSelector)
 	{
@@ -60,7 +65,7 @@ abstract class Apist
 	/**
 	 * Get current node
 	 *
-	 * @return ApistSelector
+	 * @return ApistFilter
 	 */
 	public static function current()
 	{
@@ -100,6 +105,22 @@ abstract class Apist
 	public function setBaseUrl($baseUrl)
 	{
 		$this->baseUrl = $baseUrl;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isSuppressExceptions()
+	{
+		return $this->suppressExceptions;
+	}
+
+	/**
+	 * @param boolean $suppressExceptions
+	 */
+	public function setSuppressExceptions($suppressExceptions)
+	{
+		$this->suppressExceptions = $suppressExceptions;
 	}
 
 	/**
@@ -196,83 +217,6 @@ abstract class Apist
 	protected function delete($url, $blueprint, $options = [])
 	{
 		return $this->request('DELETE', $url, $blueprint, $options);
-	}
-
-	/**
-	 * @param $node
-	 * @return mixed
-	 */
-	public function element($node)
-	{
-		return $node;
-	}
-
-	/**
-	 * @param $node
-	 * @param $callback
-	 * @return mixed
-	 */
-	public function call($node, $callback)
-	{
-		return $callback($node);
-	}
-
-	/**
-	 * @param $node
-	 * @param $callback
-	 * @return mixed
-	 */
-	public function check($node, $callback)
-	{
-		return $this->call($node, $callback);
-	}
-
-	/**
-	 * @param $node
-	 * @return bool
-	 */
-	public function exists($node)
-	{
-		return (bool)count($node);
-	}
-
-	/**
-	 * @param $node
-	 * @param $blueprint
-	 * @return array|string
-	 */
-	public function then($node, $blueprint)
-	{
-		if ($node === true)
-		{
-			return $this->getCurrentMethod()->parseBlueprint($blueprint);
-		}
-		return $node;
-	}
-
-	/**
-	 * @param Crawler $node
-	 * @param $blueprint
-	 * @return mixed
-	 */
-	public function each(Crawler $node, $blueprint = null)
-	{
-		$callback = $blueprint;
-		if (is_null($callback))
-		{
-			$callback = function ($node)
-			{
-				return $node;
-			};
-		}
-		if ( ! is_callable($callback))
-		{
-			$callback = function ($node) use ($blueprint)
-			{
-				return $this->getCurrentMethod()->parseBlueprint($blueprint, $node);
-			};
-		}
-		return $node->each($callback);
 	}
 
 }
