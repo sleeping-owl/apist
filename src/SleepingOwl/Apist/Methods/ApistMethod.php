@@ -4,8 +4,8 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use SleepingOwl\Apist\Apist;
+use SleepingOwl\Apist\DomCrawler\Crawler;
 use SleepingOwl\Apist\Selectors\ApistSelector;
-use Symfony\Component\DomCrawler\Crawler;
 
 class ApistMethod
 {

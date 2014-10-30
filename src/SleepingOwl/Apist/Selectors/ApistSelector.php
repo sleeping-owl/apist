@@ -11,6 +11,7 @@ use Symfony\Component\DomCrawler\Crawler;
  * @method ApistSelector attr($attribute)
  * @method ApistSelector each($closure)
  * @method ApistSelector eq($offset)
+ * @method ApistSelector filter($cssSelector)
  * @method ApistSelector first()
  * @method ApistSelector last()
  * @method ApistSelector element()
