@@ -61,6 +61,10 @@ class Parser
 	{
 		$callback = function (&$value)
 		{
+			if (is_string($value))
+			{
+				$value = str_replace(':current', '*', $value);
+			}
 			if ($value[0] === ':')
 			{
 				# structure

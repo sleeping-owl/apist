@@ -58,6 +58,16 @@ abstract class Apist
 	}
 
 	/**
+	 * Get current node
+	 *
+	 * @return ApistSelector
+	 */
+	public static function current()
+	{
+		return static::filter('*');
+	}
+
+	/**
 	 * Initialize api from yaml configuration file
 	 *
 	 * @param $file

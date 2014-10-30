@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+2014-10-30, v1.2.1
+------------------
+
+* New method Apist::current() to create filter based on current node element. Usefull in ->each() callback.
+* New YAML default structure :current. Same as Apist::current() method.
+
 2014-10-25, v1.2.0
 ------------------
 
