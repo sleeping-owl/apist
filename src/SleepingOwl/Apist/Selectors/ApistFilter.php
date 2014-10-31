@@ -40,6 +40,7 @@ class ApistFilter
 	 */
 	public function text()
 	{
+		$this->guardCrawler();
 		return $this->node->text();
 	}
 
@@ -48,6 +49,7 @@ class ApistFilter
 	 */
 	public function html()
 	{
+		$this->guardCrawler();
 		return $this->node->html();
 	}
 
@@ -57,6 +59,7 @@ class ApistFilter
 	 */
 	public function filter($selector)
 	{
+		$this->guardCrawler();
 		return $this->node->filter($selector);
 	}
 
@@ -66,6 +69,7 @@ class ApistFilter
 	 */
 	public function filterNodes($selector)
 	{
+		$this->guardCrawler();
 		$rootNode = $this->method->getCrawler();
 		$crawler = new Crawler;
 		$rootNode->filter($selector)->each(function (Crawler $filteredNode) use ($crawler)
@@ -89,6 +93,7 @@ class ApistFilter
 	 */
 	public function find($selector)
 	{
+		$this->guardCrawler();
 		return $this->node->filter($selector);
 	}
 
@@ -97,6 +102,7 @@ class ApistFilter
 	 */
 	public function children()
 	{
+		$this->guardCrawler();
 		return $this->node->children();
 	}
 
@@ -105,6 +111,7 @@ class ApistFilter
 	 */
 	public function prev()
 	{
+		$this->guardCrawler();
 		return $this->prevAll()->first();
 	}
 
@@ -113,6 +120,7 @@ class ApistFilter
 	 */
 	public function prevAll()
 	{
+		$this->guardCrawler();
 		return $this->node->previousAll();
 	}
 
@@ -122,6 +130,7 @@ class ApistFilter
 	 */
 	public function prevUntil($selector)
 	{
+		$this->guardCrawler();
 		$crawler = new Crawler;
 		$filter = new static($this->node, $this->method);
 		while (1)
@@ -143,6 +152,7 @@ class ApistFilter
 	 */
 	public function next()
 	{
+		$this->guardCrawler();
 		return $this->nextAll()->first();
 	}
 
@@ -151,6 +161,7 @@ class ApistFilter
 	 */
 	public function nextAll()
 	{
+		$this->guardCrawler();
 		return $this->node->nextAll();
 	}
 
@@ -160,6 +171,7 @@ class ApistFilter
 	 */
 	public function nextUntil($selector)
 	{
+		$this->guardCrawler();
 		$crawler = new Crawler;
 		$filter = new static($this->node, $this->method);
 		while (1)
@@ -181,6 +193,7 @@ class ApistFilter
 	 */
 	public function is($selector)
 	{
+		$this->guardCrawler();
 		return count($this->filterNodes($selector)) > 0;
 	}
 
@@ -189,6 +202,7 @@ class ApistFilter
 	 */
 	public function closest($selector)
 	{
+		$this->guardCrawler();
 		$this->node = $this->node->parents();
 		return $this->filterNodes($selector)->last();
 	}
@@ -199,6 +213,7 @@ class ApistFilter
 	 */
 	public function attr($attribute)
 	{
+		$this->guardCrawler();
 		return $this->node->attr($attribute);
 	}
 
@@ -208,6 +223,7 @@ class ApistFilter
 	 */
 	public function hasAttr($attribute)
 	{
+		$this->guardCrawler();
 		return ! is_null($this->node->attr($attribute));
 	}
 
@@ -217,6 +233,7 @@ class ApistFilter
 	 */
 	public function eq($position)
 	{
+		$this->guardCrawler();
 		return $this->node->eq($position);
 	}
 
@@ -225,6 +242,7 @@ class ApistFilter
 	 */
 	public function first()
 	{
+		$this->guardCrawler();
 		return $this->node->first();
 	}
 
@@ -233,6 +251,7 @@ class ApistFilter
 	 */
 	public function last()
 	{
+		$this->guardCrawler();
 		return $this->node->last();
 	}
 
@@ -342,6 +361,14 @@ class ApistFilter
 		if (is_object($this->node))
 		{
 			$this->node = $this->node->text();
+		}
+	}
+
+	protected function guardCrawler()
+	{
+		if ( ! $this->node instanceof Crawler)
+		{
+			throw new \InvalidArgumentException('Current node isnt instance of Crawler.');
 		}
 	}
 

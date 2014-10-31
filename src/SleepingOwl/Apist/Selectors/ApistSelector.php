@@ -1,5 +1,6 @@
 <?php namespace SleepingOwl\Apist\Selectors;
 
+use InvalidArgumentException;
 use SleepingOwl\Apist\Methods\ApistMethod;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -36,19 +37,7 @@ class ApistSelector
 			$rootNode = $method->getCrawler();
 		}
 		$result = $rootNode->filter($this->selector);
-		if ($method->getResource()->isSuppressExceptions())
-		{
-			try
-			{
-				return $this->applyResultCallbackChain($result, $method);
-			} catch (\InvalidArgumentException $e)
-			{
-				return null;
-			}
-		} else
-		{
-			return $this->applyResultCallbackChain($result, $method);
-		}
+		return $this->applyResultCallbackChain($result, $method);
 	}
 
 	/**
@@ -74,11 +63,25 @@ class ApistSelector
 	{
 		if (empty($this->resultMethodChain))
 		{
-			return $node->text();
+			$this->addCallback('text');
 		}
+		/** @var ResultCallback[] $traceStack */
+		$traceStack = [];
 		foreach ($this->resultMethodChain as $resultCallback)
 		{
-			$node = $resultCallback->apply($node, $method);
+			try
+			{
+				$traceStack[] = $resultCallback;
+				$node = $resultCallback->apply($node, $method);
+			} catch (InvalidArgumentException $e)
+			{
+				if ($method->getResource()->isSuppressExceptions())
+				{
+					return null;
+				}
+				$message = $this->createExceptionMessage($e, $traceStack);
+				throw new InvalidArgumentException($message, 0, $e);
+			}
 		}
 		return $node;
 	}
@@ -88,11 +91,34 @@ class ApistSelector
 	 * @param $arguments
 	 * @return $this
 	 */
-	public function addCallback($name, $arguments)
+	public function addCallback($name, $arguments = [])
 	{
 		$resultCallback = new ResultCallback($name, $arguments);
 		$this->resultMethodChain[] = $resultCallback;
 		return $this;
 	}
 
-} 
+	/**
+	 * @param $e
+	 * @param ResultCallback[] $traceStack
+	 * @return string
+	 */
+	protected function createExceptionMessage(\Exception $e, $traceStack)
+	{
+		$message = "[ filter({$this->selector})";
+		foreach ($traceStack as $callback)
+		{
+			$message .= '->' . $callback->getMethodName() . '(';
+			try
+			{
+				$message .= implode(', ', $callback->getArguments());
+			} catch (\Exception $_e)
+			{
+			}
+			$message .= ')';
+		}
+		$message .= ' ] ' . $e->getMessage();
+		return $message;
+	}
+
+}

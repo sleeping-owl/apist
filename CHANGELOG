@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2014-10-31, v1.3.1
+------------------
+
+* Exception messages improvements. Now you'll see filter that throws an exception.
+
 2014-10-30, v1.3.0
 ------------------
 

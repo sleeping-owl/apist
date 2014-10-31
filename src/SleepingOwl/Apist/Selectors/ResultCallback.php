@@ -145,4 +145,20 @@ class ResultCallback
 		return call_user_func_array($this->methodName, $arguments);
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getMethodName()
+	{
+		return $this->methodName;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getArguments()
+	{
+		return $this->arguments;
+	}
+
 } 
