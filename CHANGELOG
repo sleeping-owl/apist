@@ -42,7 +42,7 @@ CHANGELOG
 * New api class method parse($content, $blueprint) to parse content by blueprint without http-requests
 * Code cleanup
 
-2012-10-22, v1.0.0
+2014-10-22, v1.0.0
 -----------------
 
 * Initial Version
