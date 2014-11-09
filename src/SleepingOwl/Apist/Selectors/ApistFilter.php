@@ -275,10 +275,28 @@ class ApistFilter
 	/**
 	 * @return ApistFilter
 	 */
-	public function trim()
+	public function trim($mask = null)
 	{
 		$this->guardText();
-		return trim($this->node);
+		return trim($this->node, $mask);
+	}
+
+	/**
+	 * @return ApistFilter
+	 */
+	public function ltrim($mask = null)
+	{
+		$this->guardText();
+		return ltrim($this->node, $mask);
+	}
+
+	/**
+	 * @return ApistFilter
+	 */
+	public function rtrim($mask = null)
+	{
+		$this->guardText();
+		return rtrim($this->node, $mask);
 	}
 
 	/**
