@@ -97,7 +97,7 @@ class ApistMethod
 	{
 		if (is_null($blueprint))
 		{
-			$blueprint = [];
+			return $this->content;
 		}
 		if ( ! is_array($blueprint))
 		{

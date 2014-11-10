@@ -159,7 +159,7 @@ abstract class Apist
 	 * @param array $options
 	 * @return array
 	 */
-	protected function get($url, $blueprint, $options = [])
+	protected function get($url, $blueprint = null, $options = [])
 	{
 		return $this->request('GET', $url, $blueprint, $options);
 	}
@@ -170,7 +170,7 @@ abstract class Apist
 	 * @param array $options
 	 * @return array
 	 */
-	protected function head($url, $blueprint, $options = [])
+	protected function head($url, $blueprint = null, $options = [])
 	{
 		return $this->request('HEAD', $url, $blueprint, $options);
 	}
@@ -181,7 +181,7 @@ abstract class Apist
 	 * @param array $options
 	 * @return array
 	 */
-	protected function post($url, $blueprint, $options = [])
+	protected function post($url, $blueprint = null, $options = [])
 	{
 		return $this->request('POST', $url, $blueprint, $options);
 	}
@@ -192,7 +192,7 @@ abstract class Apist
 	 * @param array $options
 	 * @return array
 	 */
-	protected function put($url, $blueprint, $options = [])
+	protected function put($url, $blueprint = null, $options = [])
 	{
 		return $this->request('PUT', $url, $blueprint, $options);
 	}
@@ -203,7 +203,7 @@ abstract class Apist
 	 * @param array $options
 	 * @return array
 	 */
-	protected function patch($url, $blueprint, $options = [])
+	protected function patch($url, $blueprint = null, $options = [])
 	{
 		return $this->request('PATCH', $url, $blueprint, $options);
 	}
@@ -214,7 +214,7 @@ abstract class Apist
 	 * @param array $options
 	 * @return array
 	 */
-	protected function delete($url, $blueprint, $options = [])
+	protected function delete($url, $blueprint = null, $options = [])
 	{
 		return $this->request('DELETE', $url, $blueprint, $options);
 	}
