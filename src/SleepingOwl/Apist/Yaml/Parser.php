@@ -47,6 +47,10 @@ class Parser
 			} else
 			{
 				# method
+				if ( ! isset($methodConfig['blueprint']))
+				{
+					$methodConfig['blueprint'] = null;
+				}
 				$methodConfig['blueprint'] = $this->parseBlueprint($methodConfig['blueprint']);
 				$this->methods[$method] = $methodConfig;
 			}
