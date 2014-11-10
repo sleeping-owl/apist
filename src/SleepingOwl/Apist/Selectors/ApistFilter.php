@@ -298,6 +298,15 @@ class ApistFilter
 		$this->guardText();
 		return rtrim($this->node, $mask);
 	}
+	
+	/**
+	 * @return ApistFilter
+	 */
+	public function str_replace($search, $replace, $count = null)
+	{
+		$this->guardText();
+		return str_replace($search, $replace, $this->node, $count);
+	}
 
 	/**
 	 * @return ApistFilter
