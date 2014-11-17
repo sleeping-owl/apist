@@ -21,6 +21,10 @@ Documentation can be found at [sleeping owl apist](http://sleeping-owl-apist.gop
 
 View [examples](http://sleeping-owl-apist.gopagoda.com/#examples).
 
+## Support Library
+
+You can donate in BTC: 13k36pym383rEmsBSLyWfT3TxCQMN2Lekd
+
 ## Copyright and License
 
 Apist was written by Sleeping Owl and is released under the MIT License. See the LICENSE file for details.
