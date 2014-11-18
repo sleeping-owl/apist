@@ -8,6 +8,45 @@
 
 SleepingOwl Apist is a small library which allows you to access any site in api-like style, based on html parsing.
 
+## Overview
+
+This package allows you to write method like this:
+
+```php
+public function live_broadcasts()
+{
+  return $this->get('/', [
+    'title' => Apist::filter('.live_broadcast .title')->text(),
+    'items' => Apist::filter('.live_broadcast .post_item')->each([
+      'title' => Apist::filter('a'),
+      'count' => Apist::filter('.count'),
+      'link'  => Apist::filter('a')->attr('href')
+    ])
+  ]);
+}
+```
+
+and get the following result:
+
+```json
+{
+    "title": "Live broadcast",
+    "items": [
+        {
+            "title": "Microsoft Server App-V",
+            "count": "4",
+            "link": "\/post\/240971#comments"
+        },
+        {
+            "title": "Education",
+            "count": "235",
+            "link": "\/post\/240421#comments"
+        },
+        …
+    ]
+}
+```
+
 ## Installation
 
 Require this package in your composer.json and run composer update (or run `composer require sleeping-owl/apist:1.x` directly):
