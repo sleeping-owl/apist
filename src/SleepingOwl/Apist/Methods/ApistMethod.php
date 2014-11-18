@@ -67,7 +67,7 @@ class ApistMethod
 			$url = $e->getRequest()->getUrl();
 			$status = $e->getCode();
 			$response = $e->getResponse();
-			$reason = '';
+			$reason = $e->getMessage();
 			if ( ! is_null($response))
 			{
 				$reason = $response->getReasonPhrase();
