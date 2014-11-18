@@ -65,8 +65,13 @@ class ApistMethod
 		} catch (RequestException $e)
 		{
 			$url = $e->getRequest()->getUrl();
-			$status = $e->getResponse()->getStatusCode();
-			$reason = $e->getResponse()->getReasonPhrase();
+			$status = $e->getCode();
+			$response = $e->getResponse();
+			$reason = '';
+			if ( ! is_null($response))
+			{
+				$reason = $response->getReasonPhrase();
+			}
 			return $this->errorResponse($status, $reason, $url);
 		}
 
