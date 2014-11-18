@@ -130,21 +130,7 @@ class ApistFilter
 	 */
 	public function prevUntil($selector)
 	{
-		$this->guardCrawler();
-		$crawler = new Crawler;
-		$filter = new static($this->node, $this->method);
-		while (1)
-		{
-			$node = $filter->prev();
-			if (is_null($node))
-			{
-				break;
-			}
-			$filter->node = $node;
-			if ($filter->is($selector)) break;
-			$crawler->add($node->getNode(0));
-		}
-		return $crawler;
+		return $this->nodeUntil($selector, 'prev');
 	}
 
 	/**
@@ -171,12 +157,22 @@ class ApistFilter
 	 */
 	public function nextUntil($selector)
 	{
+		return $this->nodeUntil($selector, 'next');
+	}
+
+	/**
+	 * @param $selector
+	 * @param $direction
+	 * @return Crawler
+	 */
+	public function nodeUntil($selector, $direction)
+	{
 		$this->guardCrawler();
 		$crawler = new Crawler;
 		$filter = new static($this->node, $this->method);
 		while (1)
 		{
-			$node = $filter->next();
+			$node = $filter->$direction();
 			if (is_null($node))
 			{
 				break;
@@ -391,6 +387,9 @@ class ApistFilter
 		}
 	}
 
+	/**
+	 * Guard method to be called with Crawler object
+	 */
 	protected function guardCrawler()
 	{
 		if ( ! $this->node instanceof Crawler)

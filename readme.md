@@ -4,6 +4,7 @@
 [![Latest Stable Version](https://poser.pugx.org/sleeping-owl/apist/v/stable.svg)](https://packagist.org/packages/sleeping-owl/apist)
 [![Total Downloads](https://poser.pugx.org/sleeping-owl/apist/downloads.svg)](https://packagist.org/packages/sleeping-owl/apist)
 [![License](https://poser.pugx.org/sleeping-owl/apist/license.svg)](https://packagist.org/packages/sleeping-owl/apist)
+[![Code Climate](https://codeclimate.com/github/sleeping-owl/apist/badges/gpa.svg)](https://codeclimate.com/github/sleeping-owl/apist)
 
 SleepingOwl Apist is a small library which allows you to access any site in api-like style, based on html parsing.
 
