@@ -13,16 +13,37 @@ SleepingOwl Apist is a small library which allows you to access any site in api-
 This package allows you to write method like this:
 
 ```php
-public function live_broadcasts()
+class WikiApi extends Apist
 {
-  return $this->get('/', [
-    'title' => Apist::filter('.live_broadcast .title')->text(),
-    'items' => Apist::filter('.live_broadcast .post_item')->each([
-      'title' => Apist::filter('a'),
-      'count' => Apist::filter('.count'),
-      'link'  => Apist::filter('a')->attr('href')
-    ])
-  ]);
+
+	public function getBaseUrl()
+	{
+		return 'http://en.wikipedia.org';
+	}
+
+	public function index()
+	{
+		return $this->get('/wiki/Main_Page', [
+			'welcome_message'  => Apist::filter('#mp-topbanner div:first')->text()->mb_substr(0, -1),
+			'portals'          => Apist::filter('a[title^="Portal:"]')->each([
+				'link'  => Apist::current()->attr('href')->call(function ($href)
+				{
+					return $this->getBaseUrl() . $href;
+				}),
+				'label' => Apist::current()->text()
+			]),
+			'languages'        => Apist::filter('#p-lang li a[title]')->each([
+				'label' => Apist::current()->text(),
+				'lang'  => Apist::current()->attr('title'),
+				'link'  => Apist::current()->attr('href')->call(function ($href)
+				{
+					return 'http:' . $href;
+				})
+			]),
+			'sister_projects'  => Apist::filter('#mp-sister b a')->each()->text(),
+			'featured_article' => Apist::filter('#mp-tfa')->html()
+		]);
+	}
 }
 ```
 
@@ -30,20 +51,42 @@ and get the following result:
 
 ```json
 {
-    "title": "Live broadcast",
-    "items": [
+    "welcome_message": "Welcome to Wikipedia",
+    "portals": [
         {
-            "title": "Microsoft Server App-V",
-            "count": "4",
-            "link": "\/post\/240971#comments"
+            "link": "http:\/\/habrahabr.my\/wiki\/Portal:Arts",
+            "label": "Arts"
         },
         {
-            "title": "Education",
-            "count": "235",
-            "link": "\/post\/240421#comments"
+            "link": "http:\/\/habrahabr.my\/wiki\/Portal:Biography",
+            "label": "Biography"
         },
-        …
-    ]
+        ...
+    ],
+    "languages": [
+        {
+            "label": "Simple English",
+            "lang": "Simple English",
+            "link": "http:\/\/simple.wikipedia.org\/wiki\/"
+        },
+        {
+            "label": "العربية",
+            "lang": "Arabic",
+            "link": "http:\/\/ar.wikipedia.org\/wiki\/"
+        },
+        {
+            "label": "Bahasa Indonesia",
+            "lang": "Indonesian",
+            "link": "http:\/\/id.wikipedia.org\/wiki\/"
+        },
+        ...
+    ],
+    "sister_projects": [
+        "Commons",
+        "MediaWiki",
+        ...
+    ],
+    "featured_article": "<div style=\"float: left; margin: 0.5em 0.9em 0.4em 0em;\">...<\/div>"
 }
 ```
 
