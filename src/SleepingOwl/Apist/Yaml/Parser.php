@@ -104,7 +104,7 @@ class Parser
 	{
 		$method = strtok($callback, '(),');
 		$arguments = [];
-		while ($argument = strtok('(),'))
+		while (($argument = strtok('(),')) !== false)
 		{
 			$argument = trim($argument);
 			if (preg_match('/^[\'"].*[\'"]$/', $argument))
