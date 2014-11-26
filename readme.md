@@ -54,11 +54,11 @@ and get the following result:
     "welcome_message": "Welcome to Wikipedia",
     "portals": [
         {
-            "link": "http:\/\/habrahabr.my\/wiki\/Portal:Arts",
+            "link": "http:\/\/en.wikipedia.org\/wiki\/Portal:Arts",
             "label": "Arts"
         },
         {
-            "link": "http:\/\/habrahabr.my\/wiki\/Portal:Biography",
+            "link": "http:\/\/en.wikipedia.org\/wiki\/Portal:Biography",
             "label": "Biography"
         },
         ...
