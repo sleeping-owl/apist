@@ -98,11 +98,11 @@ Require this package in your composer.json and run composer update (or run `comp
 
 ## Documentation
 
-Documentation can be found at [sleeping owl apist](http://sleeping-owl-apist.gopagoda.com).
+Documentation can be found at [sleeping owl apist](http://sleeping-owl-apist.gopagoda.com/en/php/documentation).
 
 ## Examples
 
-View [examples](http://sleeping-owl-apist.gopagoda.com/#examples).
+View [examples](http://sleeping-owl-apist.gopagoda.com/en/php#examples).
 
 ## Support Library
 
