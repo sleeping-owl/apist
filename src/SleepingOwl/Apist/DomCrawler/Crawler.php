@@ -41,4 +41,18 @@ class Crawler extends SymfonyCrawler
 		return null;
 	}
 
+	public function remove()
+	{
+		foreach ($this as $node)
+		{
+			$node->parentNode->removeChild($node);
+		}
+	}
+
+	public function parent()
+	{
+		$ar = $this->parents();
+		return new static($ar->getNode(0), $this->uri);
+	}
+
 }
