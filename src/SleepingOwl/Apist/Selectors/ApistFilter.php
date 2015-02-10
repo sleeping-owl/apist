@@ -271,7 +271,7 @@ class ApistFilter
 	/**
 	 * @return ApistFilter
 	 */
-	public function trim($mask = null)
+	public function trim($mask = " \t\n\r\0\x0B")
 	{
 		$this->guardText();
 		return trim($this->node, $mask);
@@ -280,7 +280,7 @@ class ApistFilter
 	/**
 	 * @return ApistFilter
 	 */
-	public function ltrim($mask = null)
+	public function ltrim($mask = " \t\n\r\0\x0B")
 	{
 		$this->guardText();
 		return ltrim($this->node, $mask);
@@ -289,7 +289,7 @@ class ApistFilter
 	/**
 	 * @return ApistFilter
 	 */
-	public function rtrim($mask = null)
+	public function rtrim($mask = " \t\n\r\0\x0B")
 	{
 		$this->guardText();
 		return rtrim($this->node, $mask);
