@@ -22,6 +22,10 @@ abstract class Apist
 	 */
 	protected $currentMethod;
 	/**
+	 * @var ApistMethod
+	 */
+	protected $lastMethod;
+	/**
 	 * @var bool
 	 */
 	protected $suppressExceptions = true;
@@ -100,6 +104,14 @@ abstract class Apist
 	}
 
 	/**
+	 * @return ApistMethod
+	 */
+	public function getLastMethod()
+	{
+		return $this->lastMethod;
+	}
+
+	/**
 	 * @param string $baseUrl
 	 */
 	public function setBaseUrl($baseUrl)
@@ -133,6 +145,7 @@ abstract class Apist
 	protected function request($httpMethod, $url, $blueprint, $options = [])
 	{
 		$this->currentMethod = new ApistMethod($this, $url, $blueprint);
+		$this->lastMethod = $this->currentMethod;
 		$this->currentMethod->setMethod($httpMethod);
 		$result = $this->currentMethod->get($options);
 		$this->currentMethod = null;

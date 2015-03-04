@@ -33,6 +33,10 @@ class ApistMethod
 	 * @var Crawler
 	 */
 	protected $crawler;
+	/**
+	 * @var \GuzzleHttp\Message\Response
+	 */
+	protected $response;
 
 	/**
 	 * @param $resource
@@ -90,6 +94,7 @@ class ApistMethod
 		$client = $this->resource->getGuzzle();
 		$request = $client->createRequest($this->getMethod(), $this->url, $arguments);
 		$response = $client->send($request);
+		$this->setResponse($response);
 		$this->setContent((string)$response->getBody());
 	}
 
@@ -203,6 +208,22 @@ class ApistMethod
 	public function getResource()
 	{
 		return $this->resource;
+	}
+
+	/**
+	 * @return \GuzzleHttp\Message\Response
+	 */
+	public function getResponse()
+	{
+		return $this->response;
+	}
+
+	/**
+	 * @param \GuzzleHttp\Message\Response $response
+	 */
+	public function setResponse($response)
+	{
+		$this->response = $response;
 	}
 
 }
