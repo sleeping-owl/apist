@@ -1,6 +1,6 @@
 ## SleepingOwl Apist
 
-[![Build Status](https://travis-ci.org/sleeping-owl/apist.svg?branch=master)](https://travis-ci.org/sleeping-owl/apist)
+[![Build Status](https://travis-ci.org/graymic/apist.svg?branch=master)](https://travis-ci.org/sleeping-owl/apist)
 [![Latest Stable Version](https://poser.pugx.org/sleeping-owl/apist/v/stable.svg)](https://packagist.org/packages/sleeping-owl/apist)
 [![Total Downloads](https://poser.pugx.org/sleeping-owl/apist/downloads.svg)](https://packagist.org/packages/sleeping-owl/apist)
 [![License](https://poser.pugx.org/sleeping-owl/apist/license.svg)](https://packagist.org/packages/sleeping-owl/apist)
