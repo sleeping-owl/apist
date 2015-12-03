@@ -1,6 +1,6 @@
 {
-    "name": "sleeping-owl/apist",
-    "description": "Package to provide api-like access to foreign sites based on html parsing",
+    "name": "graymic/apist",
+    "description": "This is a fork of the Sleeping-Owl APIST library which allows you to crawl a site and turn it into an api - working with Laravel 5.1",
 	"homepage": "http://sleeping-owl-apist.gopagoda.com",
 	"license": "MIT",
 	"keywords": ["api", "crawler"],
