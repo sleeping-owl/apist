@@ -1,30 +1,41 @@
 {
-    "name": "sleeping-owl/apist",
-    "description": "Package to provide api-like access to foreign sites based on html parsing",
-	"homepage": "http://sleeping-owl-apist.gopagoda.com",
-	"license": "MIT",
-	"keywords": ["api", "crawler"],
-    "authors": [
-        {
-            "name": "Sleeping Owl",
-            "email": "owl.sleeping@yahoo.com"
-        }
-    ],
-    "require": {
-        "php": ">=5.4.0",
-		"guzzlehttp/guzzle": "5.*",
-		"symfony/css-selector": "~2.0",
-		"symfony/dom-crawler": "~2.0",
-		"symfony/yaml": "~2.0"
-    },
-	"require-dev": {
-		"phpunit/phpunit": "4.*",
-		"mockery/mockery": "0.*"
-	},
-    "autoload": {
-        "psr-0": {
-            "SleepingOwl\\Apist": "src/"
-        }
-    },
-    "minimum-stability": "stable"
+  "name": "sleeping-owl/apist",
+  "description": "Package to provide api-like access to foreign sites based on html parsing",
+  "license": "MIT",
+  "keywords": [
+    "api",
+    "crawler"
+  ],
+  "authors": [
+    {
+      "name": "Sleeping Owl",
+      "email": "owl.sleeping@yahoo.com"
+    }
+  ],
+  "homepage": "http://sleeping-owl-apist.gopagoda.com",
+  "require": {
+    "php": ">=7.2.0",
+    "guzzlehttp/guzzle": "^6",
+    "symfony/css-selector": "^2.0 || ^3.0 || ^4.0",
+    "symfony/dom-crawler": "^2.0 || ^3.0 || ^4.0",
+    "symfony/yaml": "^2.0 || ^3.0 || ^4.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "8.*",
+    "roave/security-advisories": "dev-latest"
+  },
+  "suggest": {
+    "psr/http-client-implementation": "Required for using this package"
+  },
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "SleepingOwl\\Apist\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "SleepingOwl\\Apist\\Tests\\": "tests"
+    }
+  }
 }

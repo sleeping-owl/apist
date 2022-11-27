@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+2022-11-26, v1.3.3
+------------------
+
+* Bump php version to 7.2
+* Update composer with dependencies
+* Rewrite tests to new version of phpunit
+* Update guzzlehttp
+* Update versions symfony components
+
 2014-11-18, v1.3.3
 ------------------
 

@@ -1,25 +1,28 @@
 <?php
 
+namespace SleepingOwl\Apist\Tests;
+
+use PHPUnit\Framework\TestCase;
 use SleepingOwl\Apist\Apist;
 
-class ApistTest extends PHPUnit_Framework_TestCase
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+class ApistTest extends TestCase
 {
-	/**
-	 * @var TestApi
-	 */
-	protected $resource;
+    /** @var TestApi */
+    protected $resource;
 
-	protected function setUp()
-	{
-		parent::setUp();
-		$this->resource = new TestApi;
-	}
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->resource = new TestApi();
+    }
 
-	/** @test */
-	public function it_registers_new_resource()
-	{
-		$this->assertInstanceOf('\SleepingOwl\Apist\Apist', $this->resource);
-	}
-
+    public function testItRegistersNewResource(): void
+    {
+        $this->assertInstanceOf(Apist::class, $this->resource);
+    }
 }
- 

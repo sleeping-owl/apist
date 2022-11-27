@@ -1,57 +1,68 @@
 <?php
 
-use SleepingOwl\Apist\Apist;
+namespace SleepingOwl\Apist\Tests;
 
-class ApistMethodTest extends PHPUnit_Framework_TestCase
+use GuzzleHttp\Client;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseInterface;
+
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+class ApistMethodTest extends TestCase
 {
-	/**
-	 * @var TestApi
-	 */
-	protected $resource;
+    /**
+     * @var TestApi
+     */
+    protected $resource;
 
-	protected function setUp()
-	{
-		parent::setUp();
-		$this->resource = new TestApi;
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->resource = new TestApi();
 
-		$response = Mockery::mock();
-		$response->shouldReceive('getBody')->andReturn(file_get_contents(__DIR__ . '/stub/index.html'));
+        $response = $this->getMockBuilder(ResponseInterface::class)
+            ->getMock()
+        ;
 
-		$client = Mockery::mock();
-		$client->shouldReceive('createRequest')->andReturnUsing(function ($method, $url)
-		{
-			return $url;
-		});
-		$client->shouldReceive('send')->andReturn($response);
+        $response->expects($this->once())
+            ->method('getBody')
+            ->willReturn(file_get_contents(__DIR__.'/stub/index.html'))
+        ;
 
-		$this->resource->setGuzzle($client);
-	}
+        $client = $this->getMockBuilder(Client::class)
+            ->getMock()
+        ;
 
-	/** @test */
-	public function it_parses_result_by_blueprint()
-	{
-		$result = $this->resource->index();
+        $client->method('request')
+            ->willReturn($response)
+        ;
 
-		$this->assertEquals('Моя лента', $result['title']);
-		$this->assertEquals('http://tmtm.ru/', $result['copyright']);
-		$this->assertCount(10, $result['posts']);
-	}
+        $this->resource->setHttpClient($client);
+    }
 
-	/** @test */
-	public function it_returns_null_if_element_not_found()
-	{
-		$result = $this->resource->element_not_found();
+    public function testItParsesResultByBlueprint(): void
+    {
+        $result = $this->resource->index();
 
-		$this->assertEquals(['title' => null], $result);
-	}
+        $this->assertEquals('Моя лента', $result['title']);
+        $this->assertEquals('http://tmtm.ru/', $result['copyright']);
+        $this->assertCount(10, $result['posts']);
+    }
 
-	/** @test */
-	public function it_parses_non_array_blueprint()
-	{
-		$result = $this->resource->non_array_blueprint();
+    public function testItReturnsNullIfElementNotFound(): void
+    {
+        $result = $this->resource->elementNotFound();
 
-		$this->assertEquals('Моя лента', $result);
-	}
+        $this->assertEquals(['title' => null], $result);
+    }
 
+    public function testItParsesNonArrayBlueprint(): void
+    {
+        $result = $this->resource->nonArrayBlueprint();
+
+        $this->assertEquals('Моя лента', $result);
+    }
 }
- 
